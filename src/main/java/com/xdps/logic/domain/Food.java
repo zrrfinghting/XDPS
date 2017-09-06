@@ -34,7 +34,7 @@ public class Food extends BasicBean {
     private int storage;//库存
 
     @Column(name = "PRICE")
-    private int price;//价格
+    private double price;//价格
 
     @Column(name = "IMAGE")
     private String image;
@@ -87,11 +87,11 @@ public class Food extends BasicBean {
         this.storage = storage;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

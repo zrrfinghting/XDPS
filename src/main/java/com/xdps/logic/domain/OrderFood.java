@@ -26,7 +26,7 @@ public class OrderFood extends BasicBean {
     private String foodId;
 
     @Column(name = "NUMBER")
-    private int number;
+    private double number;
 
     @Column(name = "STATE")
     private int state;
@@ -47,11 +47,11 @@ public class OrderFood extends BasicBean {
         this.foodId = foodId;
     }
 
-    public int getNumber() {
+    public double getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(double number) {
         this.number = number;
     }
 

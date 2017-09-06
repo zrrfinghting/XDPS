@@ -1,7 +1,11 @@
 package com.xdps.logic.dao;
 
 import com.xdps.logic.domain.OrderFood;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * OrderFood接口
@@ -17,7 +21,7 @@ public interface OrderFoodDao extends CrudRepository<OrderFood, Integer> {
      * @param orderId
      * @return
      */
-    public OrderFood findByOrderId(String orderId);
+    public List<OrderFood> findByOrderId(String orderId);
 
     /**
      * 根据orderId和foodId获取orderFood信息
@@ -27,4 +31,13 @@ public interface OrderFoodDao extends CrudRepository<OrderFood, Integer> {
      * @return
      */
     public OrderFood findByOrderIdAndFoodId(String orderId, String foodId);
+
+    /**
+     * 根据foodId删除food信息
+     *
+     * @param foodId
+     */
+    @Modifying
+    @Transactional
+    public void deleteByFoodId(String foodId);
 }

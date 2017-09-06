@@ -114,9 +114,9 @@ public class UserController {
                 }
             }
             userDao.delete(users);
-            if (unDeleteIds.equals("")) {
+            if (unDeleteIds.equals("") && deleteIds.length() > 0) {
                 //记录日志
-                logDao.save(new Log("", 4, "批量删除用户", new Date()));
+                logDao.save(new Log("", 4, "批量删除用户成功", new Date()));
                 return JsonUtil.returnStr(JsonUtil.SUCCESS, "批量删除用户" + deleteIds + "信息成功");
             } else {
                 //记录日志

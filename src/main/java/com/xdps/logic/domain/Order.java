@@ -47,7 +47,7 @@ public class Order extends BasicBean {
     private String orderDesc;//备注
 
     @Column(name = "STATE")
-    private int state;//-1--取消订单，0--未付款，1--未配送，2--配送完成
+    private int state;//-1--取消订单，0--未付款，1--未配送，2--配送中，3--配送完成
 
 
     public String getOrderId() {

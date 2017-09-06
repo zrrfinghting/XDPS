@@ -3,10 +3,11 @@ package com.xdps.logic.dao;
 import com.xdps.logic.domain.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Column;
 
 /**
  * 订单接口
@@ -91,4 +92,46 @@ public interface OrderDao extends CrudRepository<Order, Integer> {
             "t.delivery like %?1% or t.deliveryPhone like %?1% or t.receiver like %?1% or t.receiverPhone like %?1%)")
     public long countAllByKeywordAndCreateUserAndState(String keyword, String createUser, int state);
 
+
+    /**
+     * 根据createUser 、startTime、endTime分页查询
+     *
+     * @param createUser
+     * @param startTime
+     * @param endTime
+     * @param pageable
+     * @return
+     */
+    @Query("select t from Order t where t.createUser=?1 and t.starTime=?2 and t.endTime=?3")
+    public Page<Order> findAllByCreateUserAndStarTimeAndEndTime(String createUser, String startTime, String endTime, Pageable pageable);
+
+    @Query("select count (*) from Order t where t.createUser=?1 and t.starTime=?2 and t.endTime=?3")
+    public long countAllByCreateUserAndStarTimeAndEndTime(String createUser, String startTime, String endTime);
+
+
+    /**
+     * 根据createUser 、startTime、endTime、state分页查询
+     *
+     * @param createUser
+     * @param startTime
+     * @param endTime
+     * @param state
+     * @param pageable
+     * @return
+     */
+    @Query("select t from Order t where t.createUser=?1 and t.starTime=?2 and t.endTime=?3 and t.state=?4")
+    public Page<Order> findAllByCreateUserAndStarTimeAndEndTimeAndState(String createUser, String startTime, String endTime, int state, Pageable pageable);
+
+    @Query("select count (*) from Order t where t.createUser=?1 and t.starTime=?2 and t.endTime=?3 and t.state=?4")
+    public long countAllByCreateUserAndStarTimeAndEndTimeaAndState(String createUser, String startTime, String endTime, int state);
+
+    /**
+     * 根据orderId删除订单(状态为未付款的即state==0)
+     *
+     * @param orderId
+     */
+    @Transactional
+    @Modifying
+    @Query("delete from Order t where t.orderId=?1 and t.state=0")
+    public void deleteByOrderId(String orderId);
 }

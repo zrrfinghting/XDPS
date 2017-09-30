@@ -4,7 +4,6 @@ import com.xdps.logic.dao.LogDao;
 import com.xdps.logic.dao.UserDao;
 import com.xdps.logic.domain.Log;
 import com.xdps.logic.domain.User;
-import com.xdps.logic.util.DateUtil;
 import com.xdps.logic.util.JsonUtil;
 import com.xdps.logic.util.MD5Util;
 import com.xdps.logic.util.TableUtil;
@@ -43,6 +42,7 @@ public class UserController {
     public String addUser(@RequestBody User user) {
         try {
             user.setCreateDate(new Date());
+            user.setPassword(MD5Util.getMd5(user.getUserId(),user.getPassword()));
             userDao.save(user);
             //记录日志
             logDao.save(new Log("", 2, "新增用户成功", new Date()));
@@ -155,7 +155,7 @@ public class UserController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ApiOperation(value = "登录系统", notes = "登录系统")
-    public String login(@RequestParam Object obj) {
+    public String login(@RequestBody Object obj) {
         try {
             String userId = JsonUtil.getString("userId", obj);
             String password = JsonUtil.getString("password", obj);

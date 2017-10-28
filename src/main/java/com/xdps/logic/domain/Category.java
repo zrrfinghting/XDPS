@@ -27,7 +27,7 @@ public class Category extends BasicBean {
     private String parentId;
 
     @Column(name = "CATEGORYDESC")//分类备注
-    private String getCategoryDesc;
+    private String categoryDesc;
 
     //setter 和getter方法
 
@@ -56,11 +56,11 @@ public class Category extends BasicBean {
         this.parentId = parentId;
     }
 
-    public String getGetCategoryDesc() {
-        return getCategoryDesc;
+    public String getCategoryDesc() {
+        return categoryDesc;
     }
 
-    public void setGetCategoryDesc(String getCategoryDesc) {
-        this.getCategoryDesc = getCategoryDesc;
+    public void setCategoryDesc(String categoryDesc) {
+        this.categoryDesc = categoryDesc;
     }
 }

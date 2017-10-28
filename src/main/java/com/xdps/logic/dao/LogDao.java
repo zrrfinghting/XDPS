@@ -79,4 +79,17 @@ public interface LogDao extends CrudRepository<Log, Integer> {
 
     @Query("select count (*) from Log t where t.type=?1 and t.actionTime between ?2 and ?3")
     public long count(int type, Date startTime, Date endTime);
+
+
+    /**
+     * 根据关键字查询日志信息
+     * @param keyword
+     * @param pageable
+     * @return
+     */
+    @Query("select t from Log t where t.content like %?1% or t.type like %?1% or t.userCode like %?1%")
+    Page<Log> getAllByKeyword(String keyword,Pageable pageable);
+
+    @Query("select count (*) from Log t where t.content like %?1% or t.type like %?1% or t.userCode like %?1%")
+    public long countAllByKeyword(String keyword);
 }

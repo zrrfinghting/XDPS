@@ -2,6 +2,7 @@ package com.xdps.logic.domain;/**
  * Created by Admin on 2017/8/28.
  */
 
+import com.xdps.logic.util.DateUtil;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -85,8 +86,8 @@ public class Log {
         this.content = content;
     }
 
-    public Date getActionTime() {
-        return actionTime;
+    public String getActionTime() {
+        return DateUtil.formatDate(DateUtil.FORMAT2,actionTime);
     }
 
     public void setActionTime(Date actionTime) {

@@ -42,10 +42,10 @@ public interface CategoryDao extends CrudRepository<Category, Integer> {
      * @param pageable
      * @return
      */
-    @Query("select t from Category  t where t.categoryName like %?1% or t.categoryId like %?1% or t.getCategoryDesc like %?1% ")
+    @Query("select t from Category  t where t.categoryName like %?1% or t.categoryId like %?1% or t.categoryDesc like %?1% ")
     public Page<Category> findAllByKeyword(String keyword, Pageable pageable);
 
-    @Query("select count (*) from Category  t where t.categoryName like %?1% or t.categoryId like %?1%  or t.getCategoryDesc like %?1% ")
+    @Query("select count (*) from Category  t where t.categoryName like %?1% or t.categoryId like %?1%  or t.categoryDesc like %?1% ")
     public long countAllByKeyword(String keyword);
 
     /**

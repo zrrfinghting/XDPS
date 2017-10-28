@@ -75,4 +75,27 @@ public class LogController {
             return JsonUtil.returnStr(JsonUtil.FAIL, "获取日志信息失败");
         }
     }
+    @RequestMapping(value = "getByKeyword", method = RequestMethod.GET)
+    @ApiOperation(value = "根据keyword   分页获取日志信息", notes = " 分页获取日志信息")
+    public String getByKeyword(
+            @RequestParam String keyword,
+            @RequestParam(value = "pageNum", defaultValue = "0") Integer pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "15") Integer pageSize){
+        try {
+            Sort sort = new Sort(Sort.Direction.DESC,"actionTime");
+            Pageable pageable = new  PageRequest(pageNum - 1, pageSize);
+            Page<Log> logs = logDao.getAllByKeyword(keyword,pageable);
+            long total = logDao.countAllByKeyword(keyword);
+            List<Log> list = new ArrayList<>();
+            for (Log log : logs) {
+                list.add(log);
+            }
+            long totalPage = total / pageSize == 0 ? total / pageSize : total / pageSize + 1;
+            return TableUtil.createTableDate(list, total, pageNum, totalPage, pageSize);
+        }catch (Exception e){
+            e.printStackTrace();
+            return JsonUtil.returnStr(JsonUtil.FAIL,"获取日志信息失败");
+        }
+    }
 }
+

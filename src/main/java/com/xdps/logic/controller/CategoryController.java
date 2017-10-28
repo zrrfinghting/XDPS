@@ -37,7 +37,8 @@ public class CategoryController {
 
     /**
      * level新增分类等级：-1--顶级(父节点为空)，0--下级，1--同级
-     * bookType对象里的parent字段是前端勾选的分类节点的categoryId
+     * category对象里的parent字段是前端勾选的分类节点的categoryId
+     *
      *
      * @param category
      * @param level
@@ -45,18 +46,18 @@ public class CategoryController {
      */
     @RequestMapping(value = "/addCategory", method = RequestMethod.POST)
     @ApiOperation(value = "新增分类", notes = "新增分类")
-    public String addCategory(@RequestBody Category category, @RequestParam int level) {
+    public String addCategory(@RequestParam int level,@RequestBody Category category) {
         try {
             if (level == -1) {
                 category.setCategoryId(String.valueOf(System.currentTimeMillis()));//当前系统毫秒值作为分类ID
                 category.setParentId("");//因为是顶级分类所以没有父类ID
                 category.setCreateDate(new Date());
             } else if (level == 0) {
+                category.setParentId(category.getParentId());//因为是下级，所以勾选分类的ID(parentId)是新增分类的父分类ID
                 category.setCategoryId(String.valueOf(System.currentTimeMillis()));//
-                category.setParentId(category.getCategoryId());//因为是下级，所以勾选分类的ID是新增分类的父分类ID
                 category.setCreateDate(new Date());
             } else if (level == 1) {
-                Category oldCategory = categoryDao.findByCategoryId(category.getCategoryId());
+                Category oldCategory = categoryDao.findByCategoryId(category.getParentId());
                 category.setCategoryId(String.valueOf(System.currentTimeMillis()));//
                 category.setParentId(oldCategory.getParentId());//因为是同级所以 父分类ID是相同的
                 category.setCreateDate(new Date());
@@ -92,7 +93,7 @@ public class CategoryController {
         }
     }
 
-    @RequestMapping(value = "/deleteById", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteById", method = RequestMethod.DELETE)
     @ApiOperation(value = "通过ID删除分类", notes = "通过ID删除分类")
     public String deleteById(@RequestParam String categoryId) {
         try {
@@ -106,7 +107,7 @@ public class CategoryController {
         }
     }
 
-    @RequestMapping(value = "/deleteByIds", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteByIds", method = RequestMethod.DELETE)
     @ApiOperation(value = "通过ID批量删除分类", notes = "通过ID批量删除分类")
     public String deleteByIds(@RequestParam String[] categoryIds) {
         try {
@@ -133,6 +134,18 @@ public class CategoryController {
         } catch (Exception e) {
             e.printStackTrace();
             return JsonUtil.returnStr(JsonUtil.FAIL, "分类删除失败");
+        }
+    }
+
+    @RequestMapping(value = "/getCategoryById", method = RequestMethod.GET)
+    @ApiOperation(value = "分页获取分类", notes = "分页获取分类信息")
+    public String getCatagoryById(@RequestParam String categoryId){
+        try {
+            Category category = categoryDao.findByCategoryId(categoryId);
+            return JsonUtil.fromObject(category);
+        }catch (Exception e){
+            e.printStackTrace();
+            return JsonUtil.returnStr(JsonUtil.FAIL,"获取分类失败");
         }
     }
 
